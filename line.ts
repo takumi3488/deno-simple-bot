@@ -1,4 +1,4 @@
-import axios from "npm:axios";
+import axios from "npm:axios@1.2.0";
 
 const line = async (text: string) => {
   const token = Deno.env.get("LINE_TOKEN");
@@ -23,8 +23,8 @@ const line = async (text: string) => {
         "Content-Type": "application/json"
       },
     }
-  )
-  console.log(res.data)
+  );
+  console.log(res.statusText);
 }
 
 export default line;
