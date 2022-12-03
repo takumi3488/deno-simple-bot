@@ -1,11 +1,13 @@
 # LINE
 
-This is a simple wrapper library for Deno to call the LINE Bot API.
+This is a simple wrapper library for Deno to call the LINE Bot and Discord Webhook.
 
 ## USAGE
 
 ```ts
-import line from "https://raw.githubusercontent.com/takumi3488/line/main/line.ts";
+import line from "https://raw.githubusercontent.com/takumi3488/deno-simple-bot/main/line.ts";
+import discord from "https://raw.githubusercontent.com/takumi3488/deno-simple-bot/main/discord.ts";
 
 await line("some text");
+await line("<Webhook URL>", "some text");
 ```
