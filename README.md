@@ -9,5 +9,5 @@ import line from "https://raw.githubusercontent.com/takumi3488/deno-simple-bot/m
 import discord from "https://raw.githubusercontent.com/takumi3488/deno-simple-bot/main/discord.ts";
 
 await line("some text");
-await line("<Webhook URL>", "some text");
+await discord("<Webhook URL>", "some text");
 ```
