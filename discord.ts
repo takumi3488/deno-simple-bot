@@ -1,7 +1,7 @@
 import axios from "npm:axios@1.2.0";
 
 const discord = async (webhookUrl: string, text: string) => {
-  const res = await axios.post(
+  await axios.post(
     webhookUrl,
     {
       content: text
@@ -12,7 +12,6 @@ const discord = async (webhookUrl: string, text: string) => {
       },
     }
   )
-  console.log(res.statusText)
 }
 
 export default discord;

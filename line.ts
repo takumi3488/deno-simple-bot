@@ -6,7 +6,7 @@ const line = async (text: string) => {
     console.error("環境変数`LINE_TOKEN'をセットしてください。");
     return
   }
-  const res = await axios.post(
+  await axios.post(
     "https://api.line.me/v2/bot/message/broadcast",
     {
       messages:
@@ -24,7 +24,6 @@ const line = async (text: string) => {
       },
     }
   );
-  console.log(res.statusText);
 }
 
 export default line;
