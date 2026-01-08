@@ -1,17 +1,11 @@
-import axios from "npm:axios@1.2.0";
-
 const discord = async (webhookUrl: string, text: string) => {
-  await axios.post(
-    webhookUrl,
-    {
-      content: text
+  await fetch(webhookUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-    {
-      headers: {
-        "Content-Type": "application/json"
-      },
-    }
-  )
+    body: JSON.stringify({ content: text }),
+  });
 }
 
 export default discord;
