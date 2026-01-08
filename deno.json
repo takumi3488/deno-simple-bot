@@ -1,0 +1,11 @@
+{
+  "name": "@takumi3488/deno-simple-bot",
+  "version": "0.0.1",
+  "exports": {
+    "./discord": "./discord.ts",
+    "./line": "./line.ts"
+  },
+  "imports": {
+    "@std/cli": "jsr:@std/cli@^1.0.0"
+  }
+}

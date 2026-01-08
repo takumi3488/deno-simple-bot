@@ -1,0 +1,70 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        command: [discord, line]
+        os: [unknown-linux-gnu, apple-darwin, pc-windows-msvc]
+        arch: [x86_64, aarch64]
+        exclude:
+          - os: pc-windows-msvc
+            arch: aarch64
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Compile binary
+        run: |
+          mkdir -p dist
+          EXT="${{ contains(matrix.os, 'windows') && '.exe' || '' }}"
+          deno compile \
+            --allow-net \
+            --allow-env \
+            --target ${{ matrix.arch }}-${{ matrix.os }} \
+            --output dist/${{ matrix.command }}-${{ matrix.os }}-${{ matrix.arch }}${EXT} \
+            ${{ matrix.command }}_cli.ts
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.command }}-${{ matrix.os }}-${{ matrix.arch }}
+          path: dist/${{ matrix.command }}-${{ matrix.os }}-${{ matrix.arch }}${{ contains(matrix.os, 'windows') && '.exe' || '' }}
+          retention-days: 1
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
